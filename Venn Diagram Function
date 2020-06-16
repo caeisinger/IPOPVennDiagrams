@@ -1,0 +1,54 @@
+# Default is first 3 columns as changing variables, last column is values, and any other column is a database (circle)
+
+ipopvenn <- function(dataframe, variablecols = c(1, 2, 3)) {
+  # Requires these 3 libraries
+  library(VennDiagram)
+  library(tidyverse)
+  library(gplots)
+  
+  possgroups <- dataframe %>% group_by_at(variablecols) %>% tally()
+  grouplength <- unique(possgroups$n)
+  
+  numCir <- ncol(dataframe) - (length(variablecols) + 1)
+  cat(numCir, "sdAD")
+  
+  if(length(grouplength) > 1) {
+    cat("ERROR: This function only works with equal sized groups. See last column here")
+    print(possgroups)
+    break
+  }
+  if (numCir == 3) {
+    v.table <- venn(list(A = 1, B = 1, C = 1), show.plot = FALSE)
+    row.names(v.table) <- c("000", "100", "010", "001", "110", "101", "011", "111")
+    for (i in 1:nrow(possgroups)) {
+      cat(i * grouplength)
+      v.table[2:8, 1] <- dataframe$N[((i * grouplength) - (unique(possgroups$n) - 1)) : (i * grouplength)]
+      plot(v.table)
+      print(v.table)
+      title(main = possgroups[i, variablecols], sub = "Sex, Age Group, County")
+    }
+  } else if (numCir == 2) {
+    v.table <- venn(list(A = 1, B = 1), show.plot = FALSE)
+    row.names(v.table) <- c("00", "10", "01", "11")
+    for (i in 1:nrow(possgroups)) {
+      cat(i * grouplength)
+      v.table[2:4, 1] <- dataframe$N[((i * grouplength) - (unique(possgroups$n) - 1)) : (i * grouplength)]
+      plot(v.table)
+      print(v.table)
+      title(main = possgroups[i, variablecols], sub = "Sex, Age Group, County")
+    }
+  } else if (numCir == 4) {
+    v.table <- venn(list(A = 1, B = 1, C = 1, D = 1), show.plot = FALSE)
+    row.names(v.table) <- c("0000", "1000", "0100", "0010", "0001", "1100", "1010", "1001", "1110", "1101", "1011", "0110", "0101", "0011", "0111", "1111")
+    for (i in 1:nrow(possgroups)) {
+      cat(i * grouplength)
+      v.table[2:16, 1] <- dataframe$N[((i * grouplength) - (unique(possgroups$n) - 1)) : (i * grouplength)]
+      plot(v.table)
+      print(v.table)
+      title(main = possgroups[i, variablecols], sub = "Sex, Age Group, County")
+    }
+  } else {
+    cat("Error: Five groups not yet supported")
+    break
+  }
+}

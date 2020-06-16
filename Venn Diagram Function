@@ -1,6 +1,6 @@
 # Default is first 3 columns as changing variables, last column is values, and any other column is a database (circle)
 
-ipopvenn <- function(dataframe, variablecols = c(1, 2, 3)) {
+ipopvenn <- function(dataframe = dataframe, variablecols = c(1, 2, 3)) {
   # Requires these 3 libraries
   library(VennDiagram)
   library(tidyverse)
@@ -10,7 +10,6 @@ ipopvenn <- function(dataframe, variablecols = c(1, 2, 3)) {
   grouplength <- unique(possgroups$n)
   
   numCir <- ncol(dataframe) - (length(variablecols) + 1)
-  cat(numCir, "sdAD")
   
   if(length(grouplength) > 1) {
     cat("ERROR: This function only works with equal sized groups. See last column here")

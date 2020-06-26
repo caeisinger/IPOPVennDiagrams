@@ -1,34 +1,46 @@
+library(docxtractr)
+ 
+doc <- read_docx("/PATH/TO/barocas_201721654_supplemental_tables.docx")
+tovenn <- docx_extract_tbl(doc, 13) # docxtractr sees Table J as the 13th table
+tovenn <- tovenn[, 3:8] # TO GET ONLY LAST 5 DATABASES
+ 
 barocas.venn <- function(dataset) {
-    lab <- gsub('[0-9]+', '', names(dataset))
-    lab <- gsub(".", " ", lab, fixed = TRUE)
-    lab <- trimws(lab)
-    names(dataset) <- lab
-    colnames(dataset)[ncol(dataset)] <- "Count"
-    print(dataset)
+  library(VennDiagram)
   
-    area1 = dataset$Count[17]; area2 = dataset$Count[9]; area3 = dataset$Count[5]; 
-    area4 = dataset$Count[3]; area5 = dataset$Count[2]; n12 = dataset$Count[25]; 
-    n13 = dataset$Count[21]; n14 = dataset$Count[19]; n15 = dataset$Count[18]; 
-    n23 = dataset$Count[13]; n24 = dataset$Count[11]; n25 = dataset$Count[10]; 
-    n34 = dataset$Count[7]; n35 = dataset$Count[6]; n45 = dataset$Count[4]; 
-    n123 = dataset$Count[29]; n124 = dataset$Count[27]; n125 = dataset$Count[26]; 
-    n134 = dataset$Count[23]; n135 = dataset$Count[22]; n145 = dataset$Count[20]; 
-    n234 = dataset$Count[15]; n235 = dataset$Count[14]; n245 = dataset$Count[12]; 
-    n345 = dataset$Count[8]; n1234 = dataset$Count[31]; n1235 = dataset$Count[30]; 
-    n1245 = dataset$Count[28]; n1345 = dataset$Count[24]; n2345 = dataset$Count[16]; 
-    n12345 = dataset$Count[32]
+  lab <- gsub('[0-9]+', '', names(dataset))
+  lab <- gsub(".", " ", lab, fixed = TRUE)
+  lab <- trimws(lab)
+  names(dataset) <- lab
+  colnames(dataset)[ncol(dataset)] <- "Count"
+  print(dataset)
+  
+  area1 = dataset$Count[17]; area2 = dataset$Count[9]; area3 = dataset$Count[5]; 
+  area4 = dataset$Count[3]; area5 = dataset$Count[2]; n12 = dataset$Count[25]; 
+  n13 = dataset$Count[21]; n14 = dataset$Count[19]; n15 = dataset$Count[18]; 
+  n23 = dataset$Count[13]; n24 = dataset$Count[11]; n25 = dataset$Count[10]; 
+  n34 = dataset$Count[7]; n35 = dataset$Count[6]; n45 = dataset$Count[4]; 
+  n123 = dataset$Count[29]; n124 = dataset$Count[27]; n125 = dataset$Count[26]; 
+  n134 = dataset$Count[23]; n135 = dataset$Count[22]; n145 = dataset$Count[20]; 
+  n234 = dataset$Count[15]; n235 = dataset$Count[14]; n245 = dataset$Count[12]; 
+  n345 = dataset$Count[8]; n1234 = dataset$Count[31]; n1235 = dataset$Count[30]; 
+  n1245 = dataset$Count[28]; n1345 = dataset$Count[24]; n2345 = dataset$Count[16]; 
+  n12345 = dataset$Count[32]
 
-    grid.newpage()
-    x <- draw.quintuple.venn(area.vector = c(area1 = area1, area2 = area2,
-                    area3 = area3, area4 = area4, area5 = area5,
-                    n12 = n12, n13 = n13, n14 = n14, n15 = n15,
-                    n23 = n23, n24 = n24, n25 = n25, 
-                    n34 = n34, n35 = n35, n45 = n45,
-                    n123 = n123, n124 = n124, n125 = n125, n134 = n134, n135 = n135, n145 = n145,
-                    n234 = n234, n235 = n235, n245 = n245, n345 = n345,
-                    n1234 = n1234, n1235 = n1235, n1245 = n1245, n1345 = n1345, n2345 = n2345,
-                    n12345 = n12345), direct.area = TRUE,
-                    fill = c("dodgerblue", "goldenrod1", "darkorange1", "seagreen3", "orchid3"),
-                    category = names(dataset[,-ncol(dataset)]))
-    grid.draw(x)
+ 
+
+  grid.newpage()
+  x <- draw.quintuple.venn(area.vector = c(area1 = area1, area2 = area2,
+                  area3 = area3, area4 = area4, area5 = area5,
+                  n12 = n12, n13 = n13, n14 = n14, n15 = n15,
+                  n23 = n23, n24 = n24, n25 = n25, 
+                  n34 = n34, n35 = n35, n45 = n45,
+                  n123 = n123, n124 = n124, n125 = n125, n134 = n134, n135 = n135, n145 = n145,
+                  n234 = n234, n235 = n235, n245 = n245, n345 = n345,
+                  n1234 = n1234, n1235 = n1235, n1245 = n1245, n1345 = n1345, n2345 = n2345,
+                  n12345 = n12345), direct.area = TRUE,
+                  fill = c("dodgerblue", "goldenrod1", "darkorange1", "seagreen3", "orchid3"),
+                  category = names(dataset[,-ncol(dataset)]))
+  grid.draw(x)
   }
+ 
+barocas.venn(tovenn)
